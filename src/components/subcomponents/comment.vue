@@ -3,9 +3,9 @@
         <h3>发表评论</h3>
         <hr>
         <label>
-            <textarea placeholder="请输入要BB的内容（做多吐槽120字）" maxlength="120"/>
+            <textarea placeholder="请输入要BB的内容（做多吐槽120字）" maxlength="120" v-model="msg"/>
         </label>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
         <div class="cmt-list">
             <div class="cmt-item" v-for="(item, i) in comments" :key="item.add_time">
                 <div class="cmt-title">
@@ -22,10 +22,12 @@
 </template>
 <script>
     import {Toast} from "mint-ui"
+
     export default {
         data() {
             return {
-                comments: [] // 所有的评论数据
+                comments: [], // 所有的评论数据
+                msg: ''
             };
         },
         created() {
@@ -34,20 +36,34 @@
         methods: {
             getComments() {
                 // 获取评论
-                this.comments=[
-                    {user_name:'wgy',add_time:'2020-04-28 18:30:09',content:''},
-                    {user_name:'test',add_time:'2020-04-28 18:31:09',content:''},
-                    {user_name:'ygw',add_time:'2020-04-28 18:32:09',content:''},
-                    {user_name:'haHa',add_time:'2020-04-28 18:33:09',content:''},
-                    {user_name:'xiXi',add_time:'2020-04-28 18:34:09',content:''},
-                    {user_name:'heiHei',add_time:'2020-04-28 18:35:09',content:''}
+                this.comments = [
+                    {user_name: 'wgy', add_time: '2020-04-28 18:30:09', content: ''},
+                    {user_name: 'test', add_time: '2020-04-28 18:31:09', content: ''},
+                    {user_name: 'ygw', add_time: '2020-04-28 18:32:09', content: ''},
+                    {user_name: 'haHa', add_time: '2020-04-28 18:33:09', content: ''},
+                    {user_name: 'xiXi', add_time: '2020-04-28 18:34:09', content: ''},
+                    {user_name: 'heiHei', add_time: '2020-04-28 18:35:09', content: ''}
                 ]
             },
-            getMore(){
+            getMore() {
                 Toast("没有更多内容啦")
+            },
+            postComment() {
+                // 校验是否为空内容
+                if (this.msg.trim().length === 0) {
+                    return Toast("评论内容不能为空！");
+                }
+                // 拼接出一个评论对象
+                const cmt = {
+                    user_name: "匿名用户",
+                    add_time: Date.now(),
+                    content: this.msg.trim()
+                };
+                this.comments.unshift(cmt);
+                this.msg = "";
             }
         },
-        props:["id"]
+        props: ["id"]
     };
 </script>
 <style lang="scss" scoped>
@@ -55,20 +71,25 @@
         h3 {
             font-size: 18px;
         }
+
         textarea {
             font-size: 14px;
             height: 85px;
             margin: 0;
         }
-        .cmt-list{
+
+        .cmt-list {
             margin: 5px 0;
-            .cmt-item{
+
+            .cmt-item {
                 font-size: 13px;
-                .cmt-title{
+
+                .cmt-title {
                     line-height: 30px;
                     background-color: #cccccc;
                 }
-                .cmt-body{
+
+                .cmt-body {
                     line-height: 35px;
                     text-indent: 2em;
                 }
