@@ -1,11 +1,7 @@
 <template>
     <div>
         <!-- 轮播图区域 -->
-        <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="item in imageList" :key="item.url">
-                <img :src="item.img" alt="">
-            </mt-swipe-item>
-        </mt-swipe>
+        <swiper :image-list="imageList" :isfull="true"/>
         <!-- 九宫格 到 6宫格 的改造工程 -->
         <ul class="mui-table-view mui-grid-view mui-grid-9">
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
@@ -48,6 +44,7 @@
     </div>
 </template>
 <script>
+    import swiper from "../subcomponents/swiper.vue";
     export default {
         data() {
             return {
@@ -65,32 +62,13 @@
                     {img: 'src/images/3.jpg', url: '3'}
                 ]
             }
+        },
+        components:{
+            swiper
         }
     };
 </script>
 <style lang="scss" scoped>
-    .mint-swipe {
-        height: 200px;
-
-        .mint-swipe-item {
-            &:nth-child(1) {
-                background-color: red;
-            }
-
-            &:nth-child(2) {
-                background-color: blue;
-            }
-
-            &:nth-child(3) {
-                background-color: yellow;
-            }
-
-            img {
-                width: 100%;
-                height: 100%;
-            }
-        }
-    }
 
     .mui-grid-view.mui-grid-9 {
         background-color: white;
